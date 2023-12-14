@@ -79,7 +79,7 @@ public class StackTests
         stack.TryPush("item1");
 
         // Assert
-        Assert.True(stack.IsFull);
+        Assert.True(stack.IsFull());
     }
 
     [Fact]

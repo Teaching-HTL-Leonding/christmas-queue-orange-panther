@@ -51,10 +51,10 @@ public class Stack
     /// Note that we are using the traditional constructor form here as it works both
     /// in .NET 7 and .NET 8. In .NET 8, you could use the Primary Constructor syntax.
     /// </remarks>
+    public int MaxHeight { get; } // kathi
     public Stack(int maxHeight)
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        MaxHeight = maxHeight;
     }
 
     /// <summary>
@@ -64,8 +64,18 @@ public class Stack
     /// <returns>True if the item was successfully added; otherwise, false.</returns>
     public bool TryPush(string content)
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        var currentCandy = new StackNode(content);
+        if (IsFull()) { return false; }
+
+        if (First == null)
+        {
+            First = currentCandy;
+            return true;
+        }
+
+        currentCandy.Next = First;
+        First = currentCandy;
+        return true;
     }
 
     /// <summary>
@@ -75,8 +85,14 @@ public class Stack
     /// <returns>True if the item was successfully removed; otherwise, false.</returns>
     public bool TryPop(out string content)
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        if (IsEmpty)
+        {
+            content = null!;
+            return false;
+        }
+        content = First!.Content;
+        First = First!.Next;
+        return true;
     }
 
     /// <summary>
@@ -85,24 +101,47 @@ public class Stack
     /// <param name="depth">The depth to peek at, where 0 is the top of the stack.</param>
     /// <returns>The content at the specified depth, or null if the depth exceeds the stack size.</returns>
     public string? Peek(int depth)
-    {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+    {   
+        if (depth > MaxHeight)
+        {
+            return null;
+        }
+        StackNode current = First!;
+        for (int i = 0; i < depth; i++)
+        {
+            current = current.Next!;
+        }
+        return current.Content;
     }
 
     /// <summary>
     /// Gets a value indicating whether the stack is empty.
     /// </summary>
-    public bool IsEmpty => 
-        // TODO: Add implementation
-        throw new NotImplementedException();
+    public bool IsEmpty => First is null; //kathi
+
 
     /// <summary>
     /// Gets a value indicating whether the stack is full.
     /// </summary>
-    public bool IsFull => 
-        // TODO: Add implementation
-        throw new NotImplementedException();
+    public bool IsFull()
+    {
+        if (First == null) { return false; }
+
+        var counter = 0;
+        StackNode current = First!;
+        do
+        {
+            counter++;
+            current = current.Next!;
+        }
+        while (current != null);
+
+        if (counter >= MaxHeight)
+        {
+            return true;
+        }
+        return false;
+    }
 
 
     /// <summary>
@@ -111,7 +150,14 @@ public class Stack
     /// <returns>True if all elements are the same, or the stack is empty; otherwise, false.</returns>
     public bool IsHomogeneous()
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        if (IsEmpty) { return true; }
+        var current = First!;
+        while(current != null)
+        {
+            
+            if (current.Content != First!.Content) { return false; }
+            current = current.Next;
+        }
+        return true;
     }
 }
