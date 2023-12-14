@@ -1,3 +1,6 @@
+using System.Net.Http.Headers;
+using System.Transactions;
+
 namespace ChristmasQueue.Collections;
 
 /// <summary>
@@ -48,10 +51,16 @@ public class ListOfStacks
     /// </summary>
     /// <param name="numberOfStacks">The number of stacks to create in the list.</param>
     /// <param name="maxStackHeight">The maximum height of each stack in the list.</param>
+    public int NumberOfStacks { get; }
+    public int MaxStackHeight { get; }
     public ListOfStacks(int numberOfStacks, int maxStackHeight)
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        NumberOfStacks = numberOfStacks;
+        MaxStackHeight = maxStackHeight;
+
+        // You might want to initialize the First node here.
+        // For example:
+        First = new ListNode(maxStackHeight);
     }
 
     /// <summary>
@@ -61,8 +70,17 @@ public class ListOfStacks
     /// <returns>The stack at the specified index, or null if the index is out of range.</returns>
     public Stack? GetAt(int stackIndex)
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+        if (stackIndex >= NumberOfStacks || First == null) { return null; }
+
+        var current = First!;
+
+        for (int i = 1; i < stackIndex; i++)
+        {
+            current = current!.Next;
+        }
+        return current?.Stack;
+
+
     }
 
     /// <summary>
@@ -71,7 +89,16 @@ public class ListOfStacks
     /// <returns>True if all stacks are homogeneous; otherwise, false.</returns>
     public bool AreAllStacksHomogeneous()
     {
-        // TODO: Add implementation
-        throw new NotImplementedException();
+
+        var current = First!;
+        for (int i = 0; i < NumberOfStacks; i++)
+        {
+            if (!current!.Stack.IsHomogeneous())
+            {
+                return false;
+            }
+            current = current.Next;
+        }
+        return true;
     }
 }

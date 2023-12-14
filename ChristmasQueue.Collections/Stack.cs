@@ -101,7 +101,7 @@ public class Stack
     /// <param name="depth">The depth to peek at, where 0 is the top of the stack.</param>
     /// <returns>The content at the specified depth, or null if the depth exceeds the stack size.</returns>
     public string? Peek(int depth)
-    {   
+    {
         if (depth > MaxHeight)
         {
             return null;
@@ -150,11 +150,9 @@ public class Stack
     /// <returns>True if all elements are the same, or the stack is empty; otherwise, false.</returns>
     public bool IsHomogeneous()
     {
-        if (IsEmpty) { return true; }
         var current = First!;
-        while(current != null)
+        while (current != null)
         {
-            
             if (current.Content != First!.Content) { return false; }
             current = current.Next;
         }
